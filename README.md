@@ -1,6 +1,6 @@
 # minst-flutter-app
 
-A flutter app that lets you experiment with a MNIST tf-keras model in real-time!
+A flutter app that lets you experiment with a MNIST (28x28) tf-keras model in real-time!
 
 Works over websockets, using the amazing [Starlette](https://www.starlette.io/) web framework.
 
