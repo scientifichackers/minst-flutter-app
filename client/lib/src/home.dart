@@ -12,6 +12,7 @@ class Home extends StatefulWidget {
 
 class _RecognizerScreen extends State<Home> {
   static var emptyPredictions = List.generate(9, (_) => 0.0);
+  static var spacing = 30.0;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,7 @@ class _RecognizerScreen extends State<Home> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(height: 50),
+        SizedBox(height: spacing),
         Padding(
           padding: EdgeInsets.all(10),
           child: Text(
@@ -60,14 +61,14 @@ class _RecognizerScreen extends State<Home> {
             textAlign: TextAlign.center,
           ),
         ),
-        SizedBox(height: 50),
+        SizedBox(height: spacing),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             buildDrawingBox(),
           ],
         ),
-        SizedBox(height: 50),
+        SizedBox(height: spacing),
         StreamBuilder(
           stream: predictor.stream,
           builder: (context, snapshot) {
@@ -177,7 +178,7 @@ class PredictionBar extends StatelessWidget {
   const PredictionBar({
     Key key,
     @required this.predictions,
-    this.height = 100,
+    this.height = 80,
     this.width = 10,
   }) : super(key: key);
 
