@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cirrusci/flutter
+    working_directory: ~/repo/client
+    steps:
+      - checkout:
+          path: ~/repo
+      - run:
+          name: Run Flutter doctor
+          command: flutter doctor -v
+      - run:
+          name: Build APK
+          command: |
+            flutter build apk --release -v
+            cd build/app/outputs/apk/release && mv app-release.apk dara_$(echo $CIRCLE_SHA1 | cut -c -7).apk
+      - store_artifacts:
+          path: build/app/outputs/apk/release
