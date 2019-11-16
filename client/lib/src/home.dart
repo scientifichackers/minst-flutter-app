@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _RecognizerScreen extends State<Home> {
       floatingActionButton: FloatingActionButton(
         onPressed: clear,
         child: Icon(
-          isLoading || loadingError == null ? Icons.refresh : Icons.delete,
+          isLoading || loadingError != null ? Icons.refresh : Icons.delete,
         ),
       ),
     );
@@ -52,7 +53,7 @@ class _RecognizerScreen extends State<Home> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(height: spacing),
+        SizedBox(height: spacing / 2),
         Padding(
           padding: EdgeInsets.all(10),
           child: Text(
@@ -108,35 +109,6 @@ class _RecognizerScreen extends State<Home> {
     );
   }
 
-  void onUpdate(details) {
-    setState(() {
-      points.add(details.localPosition);
-    });
-    predict();
-  }
-
-  void onPaintDone(_) {
-    setState(() {
-      points.add(null);
-    });
-    predict();
-  }
-
-  void clear() {
-    if (isLoading) {
-      initAsyncState();
-      return;
-    }
-    setState(() {
-      points.clear();
-    });
-    predict();
-  }
-
-  Future<void> predict() async {
-    await predictor.predict(points);
-  }
-
   var points = <Offset>[];
   var predictor = Predictor();
   var isLoading = true;
@@ -154,6 +126,7 @@ class _RecognizerScreen extends State<Home> {
       isLoading = true;
       loadingError = null;
     });
+
     try {
       await predictor.connect();
     } catch (e, trace) {
@@ -168,6 +141,38 @@ class _RecognizerScreen extends State<Home> {
         });
       }
     }
+
+    Timer.periodic(Duration(milliseconds: 250), predict);
+  }
+
+  Future<void> predict(Timer timer) async {
+    if (!mounted) {
+      timer.cancel();
+    } else {
+      await predictor.predict(points);
+    }
+  }
+
+  void onUpdate(details) {
+    setState(() {
+      points.add(details.localPosition);
+    });
+  }
+
+  void onPaintDone(_) {
+    setState(() {
+      points.add(null);
+    });
+  }
+
+  void clear() {
+    if (isLoading) {
+      initAsyncState();
+      return;
+    }
+    setState(() {
+      points.clear();
+    });
   }
 }
 
