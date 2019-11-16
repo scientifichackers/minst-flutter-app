@@ -4,6 +4,9 @@ A flutter app that lets you experiment with a MNIST tf-keras model in real-time!
 
 Works over websockets, using the amazing [Starlette](https://www.starlette.io/) web framework.
 
+![out](https://user-images.githubusercontent.com/19492893/68985653-144ff380-083e-11ea-9cee-8c260e558fc9.gif)
+
+
 ## How to use this code?
 1. Save model using `model.save(mnist_model.h5)`
 2. Download model file to `client/server/mnist_model.h5`.
