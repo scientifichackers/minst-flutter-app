@@ -22,4 +22,4 @@ final Paint kWhitePaint = Paint()
 
 final kBackgroundPaint = Paint()..color = kBrushBlack;
 
-const serverURL = 'ws://captain.almightydev.com:8900';
+const serverURL = 'ws://139.59.81.177:8900';

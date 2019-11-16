@@ -19,7 +19,9 @@ class _RecognizerScreen extends State<Home> {
       body: buildWaitConnect(),
       floatingActionButton: FloatingActionButton(
         onPressed: clear,
-        child: Icon(isLoading ? Icons.refresh : Icons.delete),
+        child: Icon(
+          isLoading || loadingError == null ? Icons.refresh : Icons.delete,
+        ),
       ),
     );
   }
@@ -70,8 +72,9 @@ class _RecognizerScreen extends State<Home> {
           stream: predictor.stream,
           builder: (context, snapshot) {
             print(snapshot);
-            var predictions = snapshot.data;
-            return PredictionBar(predictions: predictions ?? emptyPredictions);
+            return PredictionBar(
+              predictions: snapshot.data ?? emptyPredictions,
+            );
           },
         ),
       ],
@@ -145,6 +148,11 @@ class _RecognizerScreen extends State<Home> {
   }
 
   Future<void> initAsyncState() async {
+    if (!mounted) return;
+    setState(() {
+      isLoading = true;
+      loadingError = null;
+    });
     try {
       await predictor.connect();
     } catch (e, trace) {
